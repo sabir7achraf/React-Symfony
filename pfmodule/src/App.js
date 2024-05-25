@@ -1,31 +1,29 @@
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import React from 'react';
+import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
+import Home from './Home';
+import About from './About';
+import Data from './Data';
 
 function App() {
-  const [data, setData] = useState(null);
-  useEffect(() => {
-    axios.get('http://localhost:8000/api/data')
-        .then(response => {
-          setData(response.data);
-        })
-        .catch(error => {
-          console.error('There was an error fetching the data!', error);
-        });
-  }, []);
-
-  return (
-      <div>
-        <h1>React and Symfony Integration</h1>
-        {data ? (
+    return (
+        <Router>
             <div>
-              <p>{data.message}</p>
-              <p>{data.date}</p>
+                <nav>
+                    <ul>
+                        <li><Link to="/">Home</Link></li>
+                        <li><Link to="/about">About</Link></li>
+                        <li><Link to="/data">Data</Link></li>
+                    </ul>
+                </nav>
+
+                <Routes>
+                    <Route path="/" element={<Home />} />
+                    <Route path="/about" element={<About />} />
+                    <Route path="/data" element={<Data />} />
+                </Routes>
             </div>
-        ) : (
-            <p>Loading...</p>
-        )}
-      </div>
-  );
+        </Router>
+    );
 }
 
 export default App;
