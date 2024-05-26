@@ -1,4 +1,3 @@
-// Example React code
 import React, { useState } from 'react';
 import axios from 'axios';
 
@@ -9,13 +8,22 @@ const Register = () => {
     const handleRegister = async (e) => {
         e.preventDefault();
         try {
-            const registerResponse = await axios.post('/register', { email, password });
+            const registerResponse = await axios.post('http://localhost:8000/register', { email, password }, {
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
+
             const { email: userEmail, plainPassword } = registerResponse.data;
 
             // Automatically login after registration
-            const loginResponse = await axios.post('/api/login_check', {
+            const loginResponse = await axios.post('http://localhost:8000/api/login_check', {
                 email: userEmail,
                 password: plainPassword
+            }, {
+                headers: {
+                    'Content-Type': 'application/json',
+                },
             });
 
             const token = loginResponse.data.token;
