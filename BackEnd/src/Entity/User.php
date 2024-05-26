@@ -4,13 +4,10 @@ namespace App\Entity;
 
 use App\Repository\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
-#[ORM\Table(name: '`user`')]
-#[UniqueEntity(fields: ['email'], message: 'There is already an account with this email')]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
@@ -25,13 +22,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private array $roles = [];
 
     /**
-     * @var ?string The hashed password
+     * @var string The hashed password
      */
     #[ORM\Column]
     private ?string $password = null;
 
-    #[ORM\Column(type: 'boolean')]
-    private bool $isVerified = false;
+    #[ORM\Column(length: 255)]
+    private ?string $wholeName = null;
 
     public function getId(): ?int
     {
@@ -103,14 +100,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         // $this->plainPassword = null;
     }
 
-    public function isVerified(): bool
+    public function getWholeName(): ?string
     {
-        return $this->isVerified;
+        return $this->wholeName;
     }
 
-    public function setIsVerified(bool $isVerified): static
+    public function setWholeName(string $wholeName): static
     {
-        $this->isVerified = $isVerified;
+        $this->wholeName = $wholeName;
 
         return $this;
     }

@@ -54,7 +54,10 @@ class RegistrationController extends AbstractController
             );
             // do anything else you need here, like send an email
 
-            return $this->redirectToRoute('api_data');
+            return new JsonResponse([
+                'email' => $user->getEmail(),
+                'plainPassword' => $form->get('plainPassword')->getData(),
+            ]);
         }
 
         return $this->render('registration/register.html.twig', [
