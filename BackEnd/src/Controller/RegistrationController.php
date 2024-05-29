@@ -1,8 +1,8 @@
 <?php
 namespace App\Controller;
 
+
 use App\Entity\User;
-use App\Form\RegistrationFormType;
 use App\Security\EmailVerifier;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
@@ -28,17 +28,26 @@ $this->emailVerifier = $emailVerifier;
 $this->httpClient = $httpClient;
 }
 
-#[Route('/register', name: 'app_register', methods: ['POST'])]
+#[Route('/register', name: 'app_register')]
 public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager): Response
 {
+// Récupération des données de la requête
 $requestData = json_decode($request->getContent(), true);
 $email = $requestData['email'] ?? null;
 $plainPassword = $requestData['password'] ?? null;
 
+// Validation des données
 if (!$email || !$plainPassword) {
 return new JsonResponse(['error' => 'Email and password must be provided.'], JsonResponse::HTTP_BAD_REQUEST);
 }
 
+// Vérifier si l'utilisateur existe déjà
+$existingUser = $entityManager->getRepository(User::class)->findOneBy(['email' => $email]);
+if ($existingUser) {
+return new JsonResponse(['error' => 'User already exists.'], JsonResponse::HTTP_CONFLICT);
+}
+
+// Création de l'utilisateur
 $user = new User();
 $user->setEmail($email);
 $user->setPassword(
@@ -48,10 +57,11 @@ $plainPassword
 )
 );
 
+// Enregistrement de l'utilisateur dans la base de données
 $entityManager->persist($user);
 $entityManager->flush();
 
-// Send email confirmation (if required)
+// Envoi d'un email de confirmation (si nécessaire)
 $this->emailVerifier->sendEmailConfirmation('app_verify_email', $user,
 (new TemplatedEmail())
 ->from(new Address('sabirachraf032@gmail.com', 'Sabiiiiiir'))
@@ -60,25 +70,8 @@ $this->emailVerifier->sendEmailConfirmation('app_verify_email', $user,
 ->htmlTemplate('registration/confirmation_email.html.twig')
 );
 
-// Now try to log in the user
-$response = $this->httpClient->request(
-'POST',
-'http://localhost:8000/api/login_check',
-[
-'json' => [
-'email' => $email,
-'password' => $plainPassword
-]
-]
-);
-
-if ($response->getStatusCode() !== 200) {
-return new JsonResponse(['error' => 'Registration successful, but login failed.'], JsonResponse::HTTP_BAD_REQUEST);
-}
-
-$data = $response->toArray();
-
-return new JsonResponse($data);
+// Retourner une réponse indiquant que l'enregistrement est réussi
+return new JsonResponse(['message' => 'Registration successful. You can now login.'], JsonResponse::HTTP_OK);
 }
 
 #[Route('/verify/email', name: 'app_verify_email')]

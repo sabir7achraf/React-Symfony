@@ -1,9 +1,13 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 const Register = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [message, setMessage] = useState('');
+    const [error, setError] = useState('');
+    const navigate = useNavigate();
 
     const handleRegister = async (e) => {
         e.preventDefault();
@@ -14,32 +18,30 @@ const Register = () => {
                 },
             });
 
-            const { email: userEmail, plainPassword } = registerResponse.data;
+            if (registerResponse.status === 200) {
+                navigate('/login');
 
-            // Automatically login after registration
-            const loginResponse = await axios.post('http://localhost:8000/api/login_check', {
-                email: userEmail,
-                password: plainPassword
-            }, {
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-            });
-
-            const token = loginResponse.data.token;
-            // Store the token and use it for subsequent requests
-            localStorage.setItem('token', token);
+            } else {
+                setError('Registration failed.');
+                setMessage('');
+            }
         } catch (error) {
-            console.error('Registration or login failed:', error);
+            setError('Registration failed.');
+            setMessage('');
+            console.error('Registration failed:', error);
         }
     };
 
     return (
-        <form onSubmit={handleRegister}>
-            <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Email" />
-            <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Password" />
-            <button type="submit">Register</button>
-        </form>
+        <div>
+            <form onSubmit={handleRegister}>
+                <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Email" required />
+                <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Password" required />
+                <button type="submit">Register</button>
+            </form>
+            {message && <p>{message}</p>}
+            {error && <p>{error}</p>}
+        </div>
     );
 };
 

@@ -4,6 +4,7 @@ import Home from './Pages/Home';
 import About from './Pages/About';
 import Data from './Pages/Data';
 import Registration from "./Pages/Registration";
+import Login from './Pages/Login';
 
 function App() {
     return (
@@ -15,6 +16,7 @@ function App() {
                         <li><Link to="/about">About</Link></li>
                         <li><Link to="/data">Data</Link></li>
                         <li><Link to="/registration">Sign Up</Link></li>
+                        <li><Link to="/login">Sign in</Link></li>
                     </ul>
                 </nav>
 
@@ -23,6 +25,7 @@ function App() {
                     <Route path="/about" element={<About />} />
                     <Route path="/data" element={<Data />} />
                     <Route path="/registration" element={<Registration />} />
+                    <Route path="/login" element={<Login />} />
                 </Routes>
             </div>
         </Router>
