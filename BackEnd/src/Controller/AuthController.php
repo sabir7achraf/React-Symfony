@@ -32,7 +32,6 @@ throw new AuthenticationException('Invalid credentials.');
 } catch (AuthenticationException $e) {
 return new JsonResponse(['error' => $e->getMessage()], JsonResponse::HTTP_UNAUTHORIZED);
 }
-
 return new JsonResponse(['token' => $JWTManager->create($user)]);
 }
 }

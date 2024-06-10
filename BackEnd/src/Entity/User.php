@@ -30,6 +30,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 255)]
     private ?string $wholeName = null;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $bio = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -108,6 +111,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setWholeName(string $wholeName): static
     {
         $this->wholeName = $wholeName;
+
+        return $this;
+    }
+
+    public function getBio(): ?string
+    {
+        return $this->bio;
+    }
+
+    public function setBio(?string $bio): static
+    {
+        $this->bio = $bio;
 
         return $this;
     }
