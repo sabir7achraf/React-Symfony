@@ -14,15 +14,10 @@ public function __construct(Security $security)
 {
 $this->security = $security;
 }
-
-
 #[Route("/api/user", name:"api_user", methods:"GET")]
-
-
 public function getUserInfo(): JsonResponse
 {
 $user = $this->security->getUser();
-
 if (!$user) {
 return new JsonResponse(['error' => 'User not authenticated'], 401);
 }

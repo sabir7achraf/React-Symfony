@@ -35,6 +35,8 @@ public function register(Request $request, UserPasswordHasherInterface $userPass
 $requestData = json_decode($request->getContent(), true);
 $email = $requestData['email'] ?? null;
 $plainPassword = $requestData['password'] ?? null;
+$name = $requestData['name'] ?? null;
+$bio = $requestData['bio'] ?? null;
 
 // Validation des données
 if (!$email || !$plainPassword) {
@@ -50,6 +52,8 @@ return new JsonResponse(['error' => 'User already exists.'], JsonResponse::HTTP_
 // Création de l'utilisateur
 $user = new User();
 $user->setEmail($email);
+$user->setWholeName($name);
+$user->setBio($bio);
 $user->setPassword(
 $userPasswordHasher->hashPassword(
 $user,

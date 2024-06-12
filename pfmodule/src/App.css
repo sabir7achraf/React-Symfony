@@ -109,6 +109,53 @@ transition: background-color 0.3s;
 .navbar li a:hover {
   background-color: #111;
 }
+.navbar li button {
+  display: block;
+  color: white;
+  text-align: center;
+  padding: 10px 16px;
+  text-decoration: none;
+}
+
+.navbar li button:hover {
+  background-color: #111;
+}
+.ticket-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  padding: 20px;
+}
+
+.ticket-card {
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  padding: 20px;
+  width: 200px;
+  box-shadow: 2px 2px 5px rgba(0,0,0,0.1);
+}
+
+.ticket-card h2 {
+  font-size: 1.5em;
+  margin-bottom: 10px;
+}
+
+.ticket-card p {
+  margin: 5px 0;
+}
+
+.ticket-card button {
+  background-color: #007BFF;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.ticket-card button:hover {
+  background-color: #0056b3;
+}
 
 
 

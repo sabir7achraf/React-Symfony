@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import './UserProfile.css';  // Importation du fichier CSS
+import './UserProfile.css';
 
-const UserProfile = () => {
+const Profile = () => {
     const [user, setUser] = useState({
         name: '',
         email: '',
@@ -12,7 +12,7 @@ const UserProfile = () => {
 
     useEffect(() => {
         const fetchUserData = async () => {
-            const token = localStorage.getItem('token'); // Récupérer le token depuis le localStorage
+            const token = localStorage.getItem('token');
 
             if (!token) {
                 setError('User not authenticated');
@@ -51,4 +51,4 @@ const UserProfile = () => {
     );
 };
 
-export default UserProfile;
+export default Profile;

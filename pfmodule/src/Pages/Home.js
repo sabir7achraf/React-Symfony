@@ -12,9 +12,9 @@ const Home = (props) => {
     return (
         <div className="mainContainer">
             <div className={'titleContainer'}>
-                <div>Welcome!</div>
+                <div>Welcome  !</div>
             </div>
-            <div>This is the home page.</div>
+            <div>To Our Service Tickets Reservation.</div>
             <div className={'buttonContainer'}>
                 <input
                     className={'inputButton'}
